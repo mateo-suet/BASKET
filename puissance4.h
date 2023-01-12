@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <QFontComboBox>
 #include <QPushButton>
+#include <QTableWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Puissance4; }
@@ -25,7 +26,7 @@ public:
     void on_playButton_clicked();
     void createCombox();
     void createLayout();
-
+    void createPlateau();
 
 public slots:
     void play_button();
@@ -36,10 +37,14 @@ private:
     Ui::Puissance4 *ui;
     QLabel *teamLB;                     //creation d'un label
     QLabel *team2LB;
+    QLabel  *label_img ;
+    QLabel *label_equipe1_play;
+    QPixmap *pixmap_img;
     QGridLayout *layout;            //creation d'un layout
     QPushButton *confirmPlayPB;
     QPushButton *quitConfirmPB;
     int i;
     int j;
+
 };
 #endif // PUISSANCE4_H

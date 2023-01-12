@@ -1,5 +1,6 @@
 #include "puissance4.h"
 #include "./ui_puissance4.h"
+
 #include <QWidget>
 #include <QLabel>
 #include <QFont>
@@ -7,6 +8,8 @@
 #include <QRect>
 #include <QComboBox>
 #include <QFontComboBox>
+#include <QPainter>
+#include <QPalette>
 
 Puissance4::Puissance4(QWidget *parent)
     : QMainWindow(parent)
@@ -89,6 +92,29 @@ void Puissance4::createLayout()
 
 }
 
+void Puissance4::createPlateau()
+{
+
+    pixmap_img = new QPixmap("U:\\Documents\\rond_vide.png");
+    for(int j=0; j <=6;j++)
+    {
+
+        for (int i = 0; i<=5;i++)
+        {
+            label_img= new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,j,i);
+
+        }
+        layout->setColumnStretch(j,1);
+    }
+}
+
+
+
 
 void clearLayout(QLayout *layout) {
     if (layout == NULL)
@@ -112,7 +138,21 @@ void Puissance4::play_button()
     quitConfirmPB->hide();
     confirmPlayPB->hide();
     clearLayout(layout);
-    layout->deleteLater();
+    QPalette pal = QPalette();
+    pal.setColor(QPalette::Window, Qt::blue);
+    ui->centralwidget->setAutoFillBackground(true);
+    ui->centralwidget->setPalette(pal);
+    /*label_equipe1_play = new QLabel();
+    label_equipe1_play->setText("Equipe 1");
+    QFont newfont ( "Equipe 1", 18, QFont::Bold,false);
+    label_equipe1_play->setFont(newfont);
+    QHBoxLayout *lay = new QHBoxLayout();
+     lay->addWidget(label_equipe1_play);
+    layout->addLayout(lay,0,1);*/
+
+
+    createPlateau();
+
 
 
 }
@@ -129,6 +169,7 @@ void Puissance4::quit_button()
     ui->ResultPB->show();
     ui->QuitPB->show();
 }
+
 
 
 
