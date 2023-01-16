@@ -14,6 +14,7 @@
 #include <QButtonGroup>
 #include <QString>
 #include <QLineEdit>
+#include <QComboBox>
 //#include <QSqlQuery>
 //#include <QSqlDatabase>
 //#include <QSqlQuery>
@@ -38,6 +39,8 @@ public:
 
     void la_page_mdp();
 
+    void createCombox();
+
 public slots:
     void le_bouton_ok();
 
@@ -46,6 +49,10 @@ public slots:
     void le_bouton_default();
 
     void le_bouton_valider();
+
+    void le_bouton_ajouter();
+
+    void le_bouton_ajouter2();
 
 private:
     Ui::puissance4 *ui;
@@ -61,11 +68,15 @@ private:
     QPushButton *Bouton_quitter;
     QPushButton *Bouton_default;
     QPushButton *Bouton_valider_mdp;
+    QPushButton *Bouton_ajouter;
+     QPushButton *Bouton_ajouter2;
 
     QLabel *titre;
     QLabel *titre1;
     QLabel *titreBS;
     QLabel *titre_mdp;
+    QLabel *teamLB;
+    QLabel *team2LB;
 
     QGridLayout *lay;
 
@@ -75,8 +86,9 @@ private:
 
     QLineEdit *ligne_mdp;
 
-    QString *lemdp;
-    QString *c;
+    QComboBox *combo;
 
+    int i; // chiffre combobox
+    int j;
 };
 #endif // PUISSANCE4_H
