@@ -27,6 +27,8 @@ public:
     void createCombox();
     void createLayout();
     void createPlateau();
+    void change_color();
+    void keyPressEvent(QKeyEvent *event);
 
 public slots:
     void play_button();
@@ -44,7 +46,15 @@ private:
     QPushButton *confirmPlayPB;
     QPushButton *quitConfirmPB;
     int i;
+    int jeton_col1=6;
+    int jeton_col2=6;
+    int jeton_col3=6;
+    int jeton_col4=6;
+    int jeton_col5=6;
+    int jeton_col6=6;
     int j;
+    int color=0;
+
 
 };
 #endif // PUISSANCE4_H

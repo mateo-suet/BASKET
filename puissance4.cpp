@@ -10,6 +10,7 @@
 #include <QFontComboBox>
 #include <QPainter>
 #include <QPalette>
+#include <QKeyEvent>
 
 Puissance4::Puissance4(QWidget *parent)
     : QMainWindow(parent)
@@ -96,23 +97,202 @@ void Puissance4::createPlateau()
 {
 
     pixmap_img = new QPixmap("U:\\Documents\\rond_vide.png");
-    for(int j=0; j <=6;j++)
+    for(int j=0; j <=5;j++)
     {
 
-        for (int i = 0; i<=5;i++)
+        for (int i = 0; i<=6;i++)
         {
             label_img= new QLabel(this);
             label_img->setMaximumHeight(120);
             label_img->setMaximumWidth(120);
             pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
             label_img->setPixmap(*pixmap_img);
-            layout->addWidget(label_img,j,i);
+            layout->addWidget(label_img,i,j);
 
         }
-        layout->setColumnStretch(j,1);
+        layout->setColumnStretch(i,1);
     }
+
 }
 
+void Puissance4::change_color()
+{
+    qDebug()<<"hello";
+}
+
+void Puissance4::keyPressEvent(QKeyEvent *event)
+{
+
+    if (event->key() == Qt::Key_A)
+    {
+        if (color==0)
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_rouge.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col1,0);
+            jeton_col1--;
+            color=1;
+
+        }
+        else
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_jaune.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col1,0);
+            jeton_col1--;
+            color=0;
+        }
+    }
+    if (event->key() == Qt::Key_Z)
+    {
+        if (color==0)
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_rouge.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col2,1);
+            jeton_col2--;
+            color=1;
+
+        }
+        else
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_jaune.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col2,1);
+            jeton_col2--;
+            color=0;
+        }
+    }
+    if (event->key() == Qt::Key_E)
+    {
+        if (color==0)
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_rouge.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col3,2);
+            jeton_col3--;
+            color=1;
+
+        }
+        else
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_jaune.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col3,2);
+            jeton_col3--;
+            color=0;
+        }
+    }
+    if (event->key() == Qt::Key_R)
+    {
+        if (color==0)
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_rouge.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col4,3);
+            jeton_col4--;
+            color=1;
+
+        }
+        else
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_jaune.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col4,3);
+            jeton_col4--;
+            color=0;
+        }
+    }
+    if (event->key() == Qt::Key_T)
+    {
+        if (color==0)
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_rouge.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col5,4);
+            jeton_col5--;
+            color=1;
+
+        }
+        else
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_jaune.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col5,4);
+            jeton_col5--;
+            color=0;
+        }
+    }
+    if (event->key() == Qt::Key_Y)
+    {
+        if (color==0)
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_rouge.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col6,5);
+            jeton_col6--;
+            color=1;
+
+        }
+        else
+        {
+            pixmap_img = new QPixmap("U:\\Documents\\rond_jaune.png");
+            label_img=new QLabel(this);
+            label_img->setMaximumHeight(120);
+            label_img->setMaximumWidth(120);
+            pixmap_img->scaled(label_img->maximumWidth(),label_img->maximumHeight(),Qt::IgnoreAspectRatio);
+            label_img->setPixmap(*pixmap_img);
+            layout->addWidget(label_img,jeton_col6,5);
+            jeton_col6--;
+            color=0;
+        }
+    }
+
+}
 
 
 
