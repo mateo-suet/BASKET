@@ -15,9 +15,12 @@
 #include <QString>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QKeyEvent>
 //#include <QSqlQuery>
 //#include <QSqlDatabase>
 //#include <QSqlQuery>
+#include "BDD.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class puissance4; }
@@ -41,6 +44,10 @@ public:
 
     void createCombox();
 
+    void keyPressEvent(QKeyEvent * event);
+
+    void destroyCombox();
+
 public slots:
     void le_bouton_ok();
 
@@ -53,6 +60,10 @@ public slots:
     void le_bouton_ajouter();
 
     void le_bouton_ajouter2();
+
+    void le_bouton_supprimer1();
+
+    void le_bouton_supprimer2();
 
 private:
     Ui::puissance4 *ui;
@@ -69,7 +80,9 @@ private:
     QPushButton *Bouton_default;
     QPushButton *Bouton_valider_mdp;
     QPushButton *Bouton_ajouter;
-     QPushButton *Bouton_ajouter2;
+    QPushButton *Bouton_ajouter2;
+    QPushButton *Bouton_supprimer1;
+    QPushButton *Bouton_supprimer2;
 
     QLabel *titre;
     QLabel *titre1;
@@ -88,7 +101,16 @@ private:
 
     QComboBox *combo;
 
+
     int i; // chiffre combobox
     int j;
+
+    int b_equipe_1=15;
+    int b_equipe_2=15;
+
+    int b_sup_equipe_1=16;
+    int b_sup_equipe_2=16;
+    BDD ma_bdd;
 };
+
 #endif // PUISSANCE4_H

@@ -1,4 +1,5 @@
 #include "puissance4.h"
+#include "BDD.h"
 
 #include <QApplication>
 
