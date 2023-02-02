@@ -4,11 +4,11 @@
 #include <QFontComboBox>
 #include <QFont>
 #include "BDD.h"
-
+#include "new_mdp.h"
 
 puissance4::puissance4(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::puissance4)
+    , ui(new Ui::puissance4),le_new(new new_mdp)
 {
     ui->setupUi(this);
 
@@ -92,11 +92,18 @@ void puissance4::creation_des_widget()
     Bouton_supprimer1 = new QPushButton("-");
     Bouton_supprimer2 = new QPushButton("-");
 
+    Bouton_changer_mdp = new QPushButton("Changer Le Mot de Passe");
+
+    Bouton_new_player = new QPushButton("Nouveau Jouer + ");
+
+    ligne_new_player = new QLineEdit();
+
     titre = new QLabel(); //Créer les titres
     titre1 = new QLabel();
     titreBS = new QLabel();
     teamLB = new QLabel();
     team2LB = new QLabel();
+    titre_new_player = new QLabel();
 
     LeTemps = new QTimeEdit(); //Créer la zone de temps
 
@@ -139,14 +146,17 @@ void puissance4::creation_des_widget()
 
     lay->addWidget(titre1,3,0);
     lay->addWidget(LeTemps,4,0);
+    LeTemps->setTime(QTime(0,5,0,0));
 
     lay->addWidget(titreBS,5,0);
     lay->addWidget(bson,6,0);
+    bson->setChecked(true);
     lay->addWidget(bsoff,6,1);
 
     lay->addWidget(Bouton_ok,8,0);
     lay->addWidget(Bouton_quitter,8,1);
     lay->addWidget(Bouton_default,8,2);
+    lay->addWidget(Bouton_changer_mdp,8,3);
 
     lay->addWidget(teamLB,9,0);
     lay->addWidget(team2LB,9,1);
@@ -155,6 +165,8 @@ void puissance4::creation_des_widget()
 
     Groupe->addButton(nb5);
     Groupe->addButton(nb7);
+
+    nb5->setChecked(true);
 
     for(j=0;j<2;j++)
     {
@@ -170,6 +182,12 @@ void puissance4::creation_des_widget()
     lay->addWidget(Bouton_supprimer1,b_sup_equipe_1,0);
     lay->addWidget(Bouton_supprimer2,b_sup_equipe_2,1);
 
+    titre_new_player->setText("Nouveau Joueur");
+    titre_new_player->setStyleSheet("font-size: 20px");
+
+    lay->addWidget(titre_new_player,9,3);
+    lay->addWidget(ligne_new_player,10,3);
+    lay->addWidget(Bouton_new_player,11,3);
 
     lay->setContentsMargins(250,10,250,250);
 
@@ -180,6 +198,8 @@ void puissance4::creation_des_widget()
     connect(Bouton_ajouter2, SIGNAL(clicked()), this, SLOT(le_bouton_ajouter2()));
     connect(Bouton_supprimer1, SIGNAL(clicked()), this, SLOT(le_bouton_supprimer1()));
     connect(Bouton_supprimer2, SIGNAL(clicked()), this, SLOT(le_bouton_supprimer2()));
+    connect(Bouton_changer_mdp, SIGNAL(clicked()), this, SLOT(le_bouton_changer_mdp()));
+    connect(Bouton_new_player, SIGNAL(clicked()), this, SLOT(le_bouton_new_player()));
 }
 
 void puissance4::la_page_mdp()
@@ -207,6 +227,7 @@ void puissance4::la_page_mdp()
 
     connect(Bouton_valider_mdp, SIGNAL(clicked()), this, SLOT(le_bouton_valider()));
 
+
 }
 
 void puissance4::le_bouton_valider()
@@ -225,19 +246,6 @@ void puissance4::le_bouton_valider()
 
         creation_des_widget();
     }
-
-//    QString lemdp = "lui";
-//    if(c == lemdp)
-//    {
-//        clearLayout(lay);
-//        b_equipe_1 = 15;
-//        b_equipe_2 = 15;
-
-//        b_sup_equipe_1 = 16;
-//        b_sup_equipe_2 = 16;
-
-//        creation_des_widget();
-//    }
     else
     {
         QMessageBox::warning(this,"ERREUR","Mauvais MOT DE PASSE");
@@ -247,12 +255,15 @@ void puissance4::le_bouton_valider()
 
 void puissance4::createCombox()
 {
+    QString q ;
+
+    new_player_bdd.NouveauJoueur(q);
+
+    qDebug() << q ;
+
     combo = new QComboBox();
-    combo->addItem("/");
-    combo->addItem("matéo");
-    combo->addItem("Anthony");
-    combo->addItem("Le pompier");
-    combo->addItem("thibault");
+
+    combo->addItem(q);
     combo->setMaximumWidth(100);
 
     lay->addWidget(combo,i,j);
@@ -334,5 +345,32 @@ void puissance4::le_bouton_supprimer2()
 
 
 }
+void puissance4::le_bouton_changer_mdp()
+{
+    le_new.open();
+}
+
+bool puissance4::le_bouton_new_player()
+{
+    bool success;
+    success = false;
+    QSqlQuery query;
 
 
+    query.prepare("INSERT INTO Historique (Joeur) VALUES (:nom)");
+    query.bindValue(":nom",ligne_new_player->text());
+
+     if(query.exec())
+     {
+         success = true;
+         ligne_new_player->setText("");
+         QMessageBox::information(this,"nouveau joueur", "votre nouveau jouer a était valider");
+
+     }
+     else
+     {
+         ligne_new_player->setText("");
+         QMessageBox::information(this,"nouveau joueur", "nouveau joueur erreur");
+     }
+     return success;
+}

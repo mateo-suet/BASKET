@@ -16,11 +16,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QKeyEvent>
-//#include <QSqlQuery>
-//#include <QSqlDatabase>
-//#include <QSqlQuery>
 #include "BDD.h"
-
+#include "new_mdp.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class puissance4; }
@@ -65,6 +62,10 @@ public slots:
 
     void le_bouton_supprimer2();
 
+    void le_bouton_changer_mdp();
+
+    bool le_bouton_new_player();
+
 private:
     Ui::puissance4 *ui;
 
@@ -83,6 +84,8 @@ private:
     QPushButton *Bouton_ajouter2;
     QPushButton *Bouton_supprimer1;
     QPushButton *Bouton_supprimer2;
+    QPushButton *Bouton_changer_mdp;
+    QPushButton *Bouton_new_player;
 
     QLabel *titre;
     QLabel *titre1;
@@ -90,6 +93,7 @@ private:
     QLabel *titre_mdp;
     QLabel *teamLB;
     QLabel *team2LB;
+    QLabel *titre_new_player;
 
     QGridLayout *lay;
 
@@ -98,9 +102,9 @@ private:
     QWidget *fenetre_mdp;
 
     QLineEdit *ligne_mdp;
+    QLineEdit *ligne_new_player;
 
     QComboBox *combo;
-
 
     int i; // chiffre combobox
     int j;
@@ -110,7 +114,11 @@ private:
 
     int b_sup_equipe_1=16;
     int b_sup_equipe_2=16;
+
     BDD ma_bdd;
+    BDD new_player_bdd;
+
+    new_mdp le_new;
 };
 
 #endif // PUISSANCE4_H

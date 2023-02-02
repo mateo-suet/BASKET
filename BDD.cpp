@@ -12,23 +12,39 @@ BDD::BDD()
        }
        else
        {
-          qDebug() << "BDD OK";
+          qDebug() << "BDD OPEN";
     }
 }
 
 bool BDD::verifMotDePasse(QString mdp)
 {
     bool success=false;
-    QSqlQuery requete("SELECT MDP FROM Entraineur");
-    requete.value(mdp);
-    qDebug() << mdp;
 
+    QSqlQuery query;
+    query.prepare("SELECT MDP FROM Entraineur");
+    query.exec();
+    while(query.next()){
+        if(mdp ==query.value(0)){
+            success = true;
+        }
+    }
     //Faire requete aupres de la BDD pour savoir si mdp est correct
-    //
 
 
     return success;
 }
+bool BDD::NouveauJoueur(QString joueur)
+{
+    bool success=false;
 
+    QSqlQuery requette;
+    requette.prepare("SELECT Joeur FROM Historique");
+    while(requette.next()){
+    joueur == requette.value(1).toString();
 
-bool success;
+                {
+            success = true;
+        }
+    }
+    return success;
+}
