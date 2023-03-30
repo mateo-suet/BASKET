@@ -11,17 +11,23 @@ CONFIG += c++11
 
 SOURCES += \
     BDD.cpp \
+    equipe.cpp \
     main.cpp \
     new_mdp.cpp \
+    parametre.cpp \
     puissance4.cpp
 
 HEADERS += \
     BDD.h \
+    equipe.h \
     new_mdp.h \
+    parametre.h \
     puissance4.h
 
 FORMS += \
+    equipe.ui \
     new_mdp.ui \
+    parametre.ui \
     puissance4.ui
 
 # Default rules for deployment.

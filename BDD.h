@@ -8,6 +8,7 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlError>
+
 class BDD : public QObject
 {
     Q_OBJECT
@@ -18,7 +19,7 @@ class BDD : public QObject
 
     bool verifMotDePasse(QString mdp);
 
-    bool NouveauJoueur(QString joueur);
+    bool verifNomJoueur(QString joueur);
 
   private:
     QSqlDatabase m_db;

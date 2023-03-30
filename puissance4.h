@@ -16,8 +16,12 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QKeyEvent>
+#include <QList>
+#include <QSpinBox>
+#include <QDate>
 #include "BDD.h"
 #include "new_mdp.h"
+#include "equipe.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class puissance4; }
@@ -26,7 +30,6 @@ QT_END_NAMESPACE
 class puissance4 : public QMainWindow
 {
     Q_OBJECT
-
 public:
     puissance4(QWidget *parent = nullptr);
     ~puissance4();
@@ -44,6 +47,12 @@ public:
     void keyPressEvent(QKeyEvent * event);
 
     void destroyCombox();
+
+    void Ecrire();
+
+    void lesnoms_bdd();
+
+    void compteur_de_widget();
 
 public slots:
     void le_bouton_ok();
@@ -64,7 +73,10 @@ public slots:
 
     void le_bouton_changer_mdp();
 
+    void le_bouton_supprimer_joueur();
+
     bool le_bouton_new_player();
+
 
 private:
     Ui::puissance4 *ui;
@@ -86,14 +98,16 @@ private:
     QPushButton *Bouton_supprimer2;
     QPushButton *Bouton_changer_mdp;
     QPushButton *Bouton_new_player;
+    QPushButton *Bouton_sup_joueur;
+    QSpinBox *tire;
 
     QLabel *titre;
     QLabel *titre1;
+    QLabel *titre_nb_tire;
     QLabel *titreBS;
     QLabel *titre_mdp;
-    QLabel *teamLB;
-    QLabel *team2LB;
     QLabel *titre_new_player;
+    QLabel *titre_sup_player;
 
     QGridLayout *lay;
 
@@ -103,11 +117,19 @@ private:
 
     QLineEdit *ligne_mdp;
     QLineEdit *ligne_new_player;
+    QLineEdit *Nom_Equipe_1;
+    QLineEdit *Nom_Equipe_2;
 
+    QList<QString> LesNoms_combobox;
+
+    QComboBox *combo_sup;
     QComboBox *combo;
+
+    QDate *laDate;
 
     int i; // chiffre combobox
     int j;
+    int f;
 
     int b_equipe_1=15;
     int b_equipe_2=15;
@@ -115,10 +137,15 @@ private:
     int b_sup_equipe_1=16;
     int b_sup_equipe_2=16;
 
+    int x = 0;
+
     BDD ma_bdd;
-    BDD new_player_bdd;
+    BDD ma_bdd_new;
+    BDD sup_joueur;
 
     new_mdp le_new;
+
+    Equipe les_equipes;
 };
 
 #endif // PUISSANCE4_H

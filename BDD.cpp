@@ -26,6 +26,7 @@ bool BDD::verifMotDePasse(QString mdp)
     while(query.next()){
         if(mdp ==query.value(0)){
             success = true;
+
         }
     }
     //Faire requete aupres de la BDD pour savoir si mdp est correct
@@ -33,18 +34,23 @@ bool BDD::verifMotDePasse(QString mdp)
 
     return success;
 }
-bool BDD::NouveauJoueur(QString joueur)
+
+bool BDD::verifNomJoueur(QString joueur)
 {
     bool success=false;
 
-    QSqlQuery requette;
-    requette.prepare("SELECT Joeur FROM Historique");
-    while(requette.next()){
-    joueur == requette.value(1).toString();
-
-                {
+    QSqlQuery query;
+    query.prepare("SELECT Joeur FROM Historique");
+    query.exec();
+    while(query.next()){
+        if(joueur ==query.value(0)){
             success = true;
+
         }
     }
+    //Faire requete aupres de la BDD pour savoir si mdp est correct
+
+
     return success;
 }
+
