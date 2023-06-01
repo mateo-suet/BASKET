@@ -15,8 +15,17 @@ public:
     explicit Parametre(QWidget *parent = nullptr);
     ~Parametre();
 
+    void changer_le_mdp();
+
+    void valider();
+
 private:
     Ui::Parametre *ui;
+
+signals:
+    void s_changement_mdp();
+
+    void s_valider();
 };
 
 #endif // PARAMETRE_H

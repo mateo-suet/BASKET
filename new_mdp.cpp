@@ -6,7 +6,7 @@ new_mdp::new_mdp(QWidget *parent) :
     ui(new Ui::new_mdp)
 {
     ui->setupUi(this);
-    connect(ui->bouton_new_mdp, SIGNAL(clicked()), this, SLOT(le_bouton_new_mdp()));
+    connect(ui->bouton_new_mdp, &QPushButton::clicked, this, &new_mdp::le_bouton_new_mdp);
     connect(ui->ligne_new_mdp, &QLineEdit::textChanged, this, &new_mdp::ecrire);
 }
 bool success;
@@ -36,28 +36,19 @@ void new_mdp::ecrire()
     }
 }
 
+QString new_mdp::get_new_MDP()
+{
+   le_nouveau_mdp = ui->ligne_new_mdp->text();
+   return le_nouveau_mdp;
+}
+
+
 bool new_mdp::le_bouton_new_mdp()
 {
-    success = false;
-    QSqlQuery query;
+    emit Sig_new_mdp();
+}
 
-
-    query.prepare("UPDATE Entraineur set MDP = (:MDP)");
-    query.bindValue(":MDP",ui->ligne_new_mdp->text());
-
-     if(query.exec())
-     {
-         success = true;
-         ui->ligne_new_mdp->setText("");
-         QMessageBox::information(this,"nouveau mdp", "votre nouveau mdp a était valider");
-
-         new_mdp::setVisible(false);
-
-     }
-     else
-     {
-         ui->ligne_new_mdp->setText("");
-         QMessageBox::information(this,"nouveau mdp", "nouveau mot de passe erreur");
-     }
-     return success;
+void new_mdp::ligne_zero()
+{
+    ui->ligne_new_mdp->clear();
 }

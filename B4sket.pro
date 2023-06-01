@@ -13,6 +13,7 @@ SOURCES += \
     BDD.cpp \
     equipe.cpp \
     main.cpp \
+    mdp.cpp \
     new_mdp.cpp \
     parametre.cpp \
     puissance4.cpp
@@ -20,12 +21,14 @@ SOURCES += \
 HEADERS += \
     BDD.h \
     equipe.h \
+    mdp.h \
     new_mdp.h \
     parametre.h \
     puissance4.h
 
 FORMS += \
     equipe.ui \
+    mdp.ui \
     new_mdp.ui \
     parametre.ui \
     puissance4.ui

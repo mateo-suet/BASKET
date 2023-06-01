@@ -6,14 +6,36 @@
 #include "BDD.h"
 #include "equipe.h"
 #include "new_mdp.h"
+#include "parametre.h"
+#include "mdp.h"
 
 puissance4::puissance4(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::puissance4),le_new(new new_mdp), les_equipes(new Equipe)
+    , ui(new Ui::puissance4),le_new(new new_mdp), les_equipes(new Equipe), settings(new Parametre), pages(new MDP)
 {
     ui->setupUi(this);
 
-    connect(ui->SettingsPB, &QPushButton::clicked, this, &puissance4::on_sett_clicked);  
+    connect(ui->SettingsPB, &QPushButton::clicked, this, &puissance4::on_sett_clicked);
+
+    connect(&pages, &MDP::SigMDP, this, &puissance4::verifMDP);
+
+    connect(&ma_bdd,&BDD::la_BDD, this, &puissance4::verifMDP);
+
+    connect(&settings, &Parametre::s_changement_mdp, this, &puissance4::nouveau_mdp);
+
+    connect(&le_new, &new_mdp::Sig_new_mdp, this, &puissance4::nouveau_mdp);
+
+    connect(&ma_bdd, &BDD::New_MDP_OK, this, &puissance4::fin_de_ligne);
+
+    connect(&settings, &Parametre::s_valider, this, &puissance4::les_joueurs);
+
+    connect(&les_equipes, &Equipe::new_player, this, &puissance4::les_new_joueur);
+    connect(&les_equipes, &Equipe::out_player, this, &puissance4::suppresion);
+
+    connect(&les_equipes, &Equipe::ajout_bdd, this, &puissance4::ajout_bdd_historique);
+    //connect(&les_equipes, &Equipe::recup_noms, this, &puissance4::ajout_j);
+    //connect(&les_equipes, &Equipe::nouveau_combo_1, this, &puissance4::ajout_combobox_1);
+
 }
 
 puissance4::~puissance4()
@@ -23,18 +45,17 @@ puissance4::~puissance4()
 
 
 void puissance4::on_sett_clicked()
+{ 
+    pages.open();
+}
+
+void puissance4::ajout_bdd_historique()
 {
-    ui->PlayPB->hide();  //cache tout les premier boutons
-    ui->QuitPB->hide();
-    ui->SettingsPB->hide();
-    ui->ResultPB->hide();
-
-    la_page_mdp();
-
+    les_equipes.nom_historique(les_noms_historique_bdd);
+    qDebug() << les_noms_historique_bdd;
 }
 
 void clearLayout(QLayout *layout){
-    qDebug() << "on est ici";
     if (layout == NULL)
         return;
     QLayoutItem *item;
@@ -53,459 +74,193 @@ void clearLayout(QLayout *layout){
 
 void puissance4::le_bouton_ok()
 {
-
     les_equipes.open();
-
-//    int emplacement = lay->indexOf(combo);
-
-//    bool success;
-//    success = false;
-//    QSqlQuery query;
-
-//    query.prepare("UPDATE Historique SET Date=:date");
-//    query.bindValue(":date",laDate->currentDate());
-
-//     if(query.exec())
-//     {
-//         success = true;
-//         QMessageBox::information(this,"Parmétres OK", "Les paramétres sont OK");
-
-//     }
-//     else
-//     {
-//         QMessageBox::information(this,"Parmétres ERROR", "ERROR");
-//     }
-//     return success;
+    qDebug() << "Affiche Equipe";
+    ajout_j();
 }
 
-void puissance4::le_bouton_quitter()
+
+//void puissance4::keyPressEvent(QKeyEvent *event)
+//{
+
+//    if( event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+//    {
+
+//    }
+//}
+
+//void puissance4::le_bouton_ajouter() //ajoute un joueur dans l'equipe 1
+//{
+//
+//}
+
+//void puissance4::le_bouton_ajouter2() //ajoute un+ joueur dans l'equipe 2
+//{
+//    j=1;
+//    i=b_equipe_2;
+//    createCombox();
+//    lay->addWidget(Bouton_ajouter2,++b_equipe_2,j);
+//    lay->addWidget(Bouton_supprimer2,++b_sup_equipe_2,j);
+
+//}
+
+//void puissance4::le_bouton_supprimer1()
+//{
+//     j=0;
+//    if(b_equipe_1 == 10)
+//    {
+//        createCombox();
+//        ++b_equipe_1;
+//        ++b_sup_equipe_1;
+//    }
+//    --i=b_equipe_1;
+//    lay->addWidget(Bouton_ajouter,--b_equipe_1,j);
+//    lay->addWidget(Bouton_supprimer1,--b_sup_equipe_1,j);
+
+//    destroyCombox();
+//}
+
+//void puissance4::le_bouton_supprimer2()
+//{
+//     j=1;
+//    if(b_equipe_2 == 10)
+//    {
+//        createCombox();
+//        ++b_equipe_2;
+//        ++b_sup_equipe_2;
+//    }
+//    --i=b_equipe_2;
+//    lay->addWidget(Bouton_ajouter2,--b_equipe_2,j);
+//    lay->addWidget(Bouton_supprimer2,--b_sup_equipe_2,j);
+
+//    destroyCombox();
+
+
+//}
+
+
+bool puissance4::verifMDP()
 {
-    clearLayout(lay);
-    lay->deleteLater();
-    ui->PlayPB->show();  //re affiche tout les premier boutons
-    ui->QuitPB->show();
-    ui->SettingsPB->show();
-    ui->ResultPB->show();
-}
-
-void puissance4::le_bouton_default()
-{
-    Nom_Equipe_1->setText("Equipe 1");
-    Nom_Equipe_2->setText("Equipe 2");
-    tire->setValue(5);
-    nb5->setChecked(true);
-    bson->setChecked(true);
-    LeTemps->setTime(QTime(0,5,0,0));
-
-}
-
-void puissance4::creation_des_widget()
-{
+    QString mot = pages.getMDP();
 
 
-    nb5 = new QRadioButton("5",this);  // Créer les boutons de 5 et 7
-    nb7 = new QRadioButton("7",this);
-
-    bson = new QRadioButton("ON", this);
-    bsoff = new QRadioButton("OFF", this);
-
-    Bouton_ok = new QPushButton("OK"); //Créer les bouton ok quitter et default
-    Bouton_quitter = new QPushButton("Quitter");
-    Bouton_default = new QPushButton("Par Défaut");
-
-    Bouton_changer_mdp = new QPushButton("Changer Le Mot de Passe");
-
-    Bouton_new_player = new QPushButton("Nouveau Joueur + ");
-    Bouton_new_player->setEnabled(false);
-
-    Bouton_sup_joueur = new QPushButton("Supprimer Joueur - ");
-
-    ligne_new_player = new QLineEdit();
-
-    titre = new QLabel(); //Créer les titres
-    titre1 = new QLabel();
-    titreBS = new QLabel();
-    Nom_Equipe_1 = new QLineEdit("Equipe 1");
-    Nom_Equipe_2 = new QLineEdit("Equipe 2");
-    titre_new_player = new QLabel();
-    titre_nb_tire = new QLabel();
-    titre_sup_player = new QLabel();
-
-    LeTemps = new QTimeEdit(); //Créer la zone de temps
-
-    Groupe = new QButtonGroup(this);
-
-    tire = new QSpinBox();
-    tire->setValue(5);
-    tire->setRange(1,30);
-
-    titre->setText("Nombre de Panier");
-    titre->setStyleSheet("font-size: 20px");
-
-    titre1->setText("Délai De Tir");
-    titre1->setStyleSheet("font-size: 20px");
-
-    titreBS->setText("Son");
-    titreBS->setStyleSheet("font-size: 20px");
-
-    titre_nb_tire->setText("Nombre de tirs par joueur");
-    titre_nb_tire->setStyleSheet("font-size: 20px");
-
-    titre_sup_player->setText("Supprimer Joueur");
-    titre_sup_player->setStyleSheet("font-size: 20px");
-
-    ui->LeTout->setLayout(lay);
-
-    //Bouton_ajouter->setMaximumWidth(100);
-//    Bouton_ajouter2->setMaximumWidth(100);
-
-//    Bouton_supprimer1->setMaximumWidth(100);
-//    Bouton_supprimer2->setMaximumWidth(100);
-
-//    Bouton_ok->setMaximumWidth(100);
-
-//    LeTemps->setMaximumWidth(100);
-
-//    tire->setMaximumWidth(100);
-
-//    Bouton_default->setMaximumWidth(100);
-
-//    Nom_Equipe_1->setMaximumWidth(100);
-//    Nom_Equipe_1->setStyleSheet("color: red");
-
-//    Nom_Equipe_2->setFixedWidth(100);
-//    Nom_Equipe_2->setStyleSheet("color: #8B8000");
-
-    lay->addWidget(titre,1,0);  //Place tout les widget dans le Layout
-    lay->addWidget(nb5,2,0);
-    lay->addWidget(nb7,2,1);
-
-    lay->addWidget(titre1,3,0);
-    lay->addWidget(LeTemps,4,0);
-    LeTemps->setTime(QTime(0,5,0,0));
-
-    lay->addWidget(titre_nb_tire,1,2);
-
-
-    lay->addWidget(titreBS,5,0);
-    lay->addWidget(bson,6,0);
-    bson->setChecked(true);
-    lay->addWidget(bsoff,6,1);
-
-    lay->addWidget(Bouton_ok,8,0);
-    lay->addWidget(Bouton_quitter,8,1);
-    lay->addWidget(Bouton_default,8,2);
-    lay->addWidget(Bouton_changer_mdp,8,3);
-
-    lay->addWidget(Nom_Equipe_1,9,0);
-    lay->addWidget(Nom_Equipe_2,9,1);
-
-    lay->addWidget(tire,2,2);
-
-    lay->addWidget(Bouton_sup_joueur,14,3);
-
-    Groupe->addButton(nb5);
-    Groupe->addButton(nb7);
-
-    nb5->setChecked(true);
-
-    for(j=0;j<2;j++)
+    if(ma_bdd.le_mdp(mot))
     {
-        for(i=10; i<15; i++)
-        {
-            createCombox();
-        }
-    }
 
-    lay->addWidget(Bouton_ajouter,b_equipe_1,0);
+        settings.open();
+        pages.hide();
+        pages.ligne_a_zero();
 
-
-
-    lay->addWidget(Bouton_ajouter2,b_equipe_2,1);
-
-    lay->addWidget(Bouton_supprimer1,b_sup_equipe_1,0);
-    lay->addWidget(Bouton_supprimer2,b_sup_equipe_2,1);
-
-    titre_new_player->setText("Créer Joueur");
-    titre_new_player->setStyleSheet("font-size: 20px");
-
-    lay->addWidget(titre_new_player,9,3);
-    lay->addWidget(ligne_new_player,10,3);
-    lay->addWidget(Bouton_new_player,11,3);
-
-    lay->addWidget(titre_sup_player,12,3);
-/**/
-    Bouton_ajouter->setMaximumWidth(100);
-    Bouton_ajouter2->setMaximumWidth(100);
-
-    Bouton_supprimer1->setMaximumWidth(100);
-    Bouton_supprimer2->setMaximumWidth(100);
-
-    Bouton_ok->setMaximumWidth(100);
-
-    LeTemps->setMaximumWidth(100);
-
-    tire->setMaximumWidth(100);
-
-    Bouton_default->setMaximumWidth(100);
-
-    Nom_Equipe_1->setMaximumWidth(100);
-    Nom_Equipe_1->setStyleSheet("color: red");
-
-    Nom_Equipe_2->setFixedWidth(100);
-    Nom_Equipe_2->setStyleSheet("color: #8B8000");
-
-/**/
-
-
-
-    lay->setContentsMargins(50,10,100,25);
-
-    connect(Bouton_ok, SIGNAL(clicked()), this, SLOT(le_bouton_ok()));
-    connect(Bouton_quitter, SIGNAL(clicked()), this, SLOT(le_bouton_quitter()));
-    connect(Bouton_default, SIGNAL(clicked()), this, SLOT(le_bouton_default()));
-    connect(Bouton_ajouter, SIGNAL(clicked()), this, SLOT(le_bouton_ajouter()));
-    connect(Bouton_ajouter2, SIGNAL(clicked()), this, SLOT(le_bouton_ajouter2()));
-    connect(Bouton_supprimer1, SIGNAL(clicked()), this, SLOT(le_bouton_supprimer1()));
-    connect(Bouton_supprimer2, SIGNAL(clicked()), this, SLOT(le_bouton_supprimer2()));
-    connect(Bouton_changer_mdp, SIGNAL(clicked()), this, SLOT(le_bouton_changer_mdp()));
-    connect(Bouton_new_player, SIGNAL(clicked()), this, SLOT(le_bouton_new_player()));
-    connect(Bouton_sup_joueur, SIGNAL(clicked()), this, SLOT(le_bouton_supprimer_joueur()));
-    connect(ligne_new_player, &QLineEdit::textChanged, this, &puissance4::Ecrire);
-
-}
-
-void puissance4::la_page_mdp()
-{
-    lay = new QGridLayout();
-
-    ligne_mdp = new QLineEdit();
-
-    titre_mdp = new QLabel();
-    titre_mdp->setText("Mot de Passe");
-    titre_mdp->setStyleSheet("font-size: 25px");
-
-    ligne_mdp->setEchoMode(QLineEdit::Password);
-
-    Bouton_valider_mdp = new QPushButton("Valider");
-
-    ui->LeTout->setLayout(lay);
-
-    lay->addWidget(titre_mdp,0,0);
-    lay->addWidget(ligne_mdp,1,0);
-    lay->addWidget(Bouton_valider_mdp,2,0);
-    Bouton_valider_mdp->setMaximumWidth(50);
-
-    lay->setContentsMargins(50,10,50,250);
-
-    connect(Bouton_valider_mdp, SIGNAL(clicked()), this, SLOT(le_bouton_valider()));
-
-
-}
-
-void puissance4::le_bouton_valider()
-{
-
-    QString c = ligne_mdp->text();
-
-    if(ma_bdd.verifMotDePasse(c))
-    {
-        clearLayout(lay);
-        b_equipe_1 = 15;
-        b_equipe_2 = 15;
-
-        b_sup_equipe_1 = 16;
-        b_sup_equipe_2 = 16;
-
-        creation_des_widget();
     }
     else
+    {       
+        pages.ligne_a_zero();
+        pages.message();
+    }
+
+    return true;
+}
+
+bool puissance4::nouveau_mdp()
+{
+   le_new.open();
+
+   QString mdp_new = le_new.get_new_MDP();
+
+   ma_bdd.ajouter_mdp(mdp_new);
+
+}
+
+void puissance4::fin_de_ligne()
+{
+    le_new.ligne_zero();
+}
+
+void puissance4::les_joueurs()
+{
+    les_equipes.open();
+    qDebug() << "Affiche Equipe";
+    ajout_j();
+
+    this->hide();
+    settings.hide();
+}
+
+void puissance4::les_new_joueur()
+{
+    QString les_joueurs = les_equipes.ajouter_joueur();
+
+    if(ma_bdd.ajouter_Joueur(les_joueurs))
     {
-        QMessageBox::warning(this,"ERREUR","Mauvais MOT DE PASSE");
-        ligne_mdp->clear();
+        les_equipes.message();
+    }
+
+
+}
+
+void puissance4::suppresion()
+{
+    QString Joueur_a_sup = les_equipes.supprimer_joueur();
+
+    if(ma_bdd.La_suppresion(Joueur_a_sup))
+    {
+        QMessageBox::information(this,"supprimer","Joueur bien supprimer");
     }
 }
 
-void puissance4::createCombox()
-{    
-    combo = new QComboBox();
-    combo_sup = new QComboBox;
-
-    combo->setMaximumWidth(100);
-
-    lesnoms_bdd();
-
-    combo->addItems(LesNoms_combobox);
-    combo_sup->addItems(LesNoms_combobox);
-
-    lay->addWidget(combo,i,j);
-    lay->addWidget(combo_sup,13,3);
-}
-void puissance4::destroyCombox()
+void puissance4::ajout_j()
 {
-    QLayoutItem* item = lay->itemAtPosition(--i,j);
-    lay->removeItem(item);
-    qDebug() << i;
-    QWidget* widget = item->widget();
+    QList<QString> les_noms;
 
-        if(widget)
-        {
-            delete widget;
-        }
+    qDebug() << "coucou";
 
-}
-
-void puissance4::keyPressEvent(QKeyEvent *event)
-{
-
-    if( event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+    if(ma_bdd.verifNomJoueur(les_noms))
     {
-        Bouton_valider_mdp->click();
+        qDebug() << les_noms;
     }
-}
 
-void puissance4::le_bouton_ajouter() //ajoute un joueur dans l'equipe 1
-{
-    j=0;
-    i=b_equipe_1;
-    createCombox();
-    lay->addWidget(Bouton_ajouter,++b_equipe_1,j);
-    lay->addWidget(Bouton_supprimer1,++b_sup_equipe_1,j);
-}
 
-void puissance4::le_bouton_ajouter2() //ajoute un+ joueur dans l'equipe 2
-{
-    j=1;
-    i=b_equipe_2;
-    createCombox();
-    lay->addWidget(Bouton_ajouter2,++b_equipe_2,j);
-    lay->addWidget(Bouton_supprimer2,++b_sup_equipe_2,j);
+    les_equipes.recup_les_noms(les_noms);
 
 }
 
-void puissance4::le_bouton_supprimer1()
-{
-     j=0;
-    if(b_equipe_1 == 10)
-    {
-        createCombox();
-        ++b_equipe_1;
-        ++b_sup_equipe_1;
-    }
-    --i=b_equipe_1;
-    lay->addWidget(Bouton_ajouter,--b_equipe_1,j);
-    lay->addWidget(Bouton_supprimer1,--b_sup_equipe_1,j);
+//void puissance4::lesnoms_bdd()
+//{
+//    LesNoms_combobox.clear();
+//    QSqlQuery requette; QString lesNoms;
+//        requette.prepare("SELECT DISTINCT Joeur FROM Historique");
+//        requette.exec();
 
-    destroyCombox();
-}
+//        while(requette.next()){
 
-void puissance4::le_bouton_supprimer2()
-{
-     j=1;
-    if(b_equipe_2 == 10)
-    {
-        createCombox();
-        ++b_equipe_2;
-        ++b_sup_equipe_2;
-    }
-    --i=b_equipe_2;
-    lay->addWidget(Bouton_ajouter2,--b_equipe_2,j);
-    lay->addWidget(Bouton_supprimer2,--b_sup_equipe_2,j);
+//        lesNoms = requette.value(0).toString();
 
-    destroyCombox();
+//        LesNoms_combobox << lesNoms;
 
 
-}
-void puissance4::le_bouton_changer_mdp()
-{
-    le_new.open();
-}
+//        }
+//}
 
-bool puissance4::le_bouton_new_player()
-{
-    bool success;
-    success = false;
-    QSqlQuery query;
+//void puissance4::ajout_combobox_1()
+//{
+//     int position_combo = les_equipes.ajout_combobox_1p();
 
+//     position_combo++;
 
-    query.prepare("INSERT INTO Historique (Joeur) VALUES (:nom)");
-    query.bindValue(":nom",ligne_new_player->text());
+     /*combo = new QComboBox();
+     combo_sup = new QComboBox;*/
 
-     if(query.exec())
-     {
-         success = true;
-         ligne_new_player->setText("");
-         QMessageBox::information(this,"nouveau joueur", "votre nouveau jouer a était valider");
+//     lesnoms_bdd();
 
-     }
-     else
-     {
-         ligne_new_player->setText("");
-         QMessageBox::information(this,"nouveau joueur", "nouveau joueur erreur");
-     }
-     return success;
-}
+//     combo->addItems(LesNoms_combobox);
+//     combo_sup->addItems(LesNoms_combobox);
 
-void puissance4::Ecrire()
-{
-    if((ligne_new_player->text().length() !=0))
-    {
-        Bouton_new_player->setEnabled(true);
-    }
-    else
-    {
-        Bouton_new_player->setEnabled(false);
-    }
-}
-
-void puissance4::lesnoms_bdd()
-{
-    LesNoms_combobox.clear();
-    QSqlQuery requette; QString lesNoms;
-        requette.prepare("SELECT DISTINCT Joeur FROM Historique");
-        requette.exec();
-
-        while(requette.next()){
-
-        lesNoms = requette.value(0).toString();
-
-        LesNoms_combobox << lesNoms;
+    //les_equipes.plus_joueur_1(position_combo,combo);
 
 
 
-
-        }
-}
-
-void puissance4::compteur_de_widget()
-{
-    int y = lay->rowCount();
-
-    int y_c = lay->columnCount();
-
-    for (f=0; f < lay->count(); f++)
-    {
-        lay->itemAt(f);
-    }
-}
-
-void puissance4::le_bouton_supprimer_joueur()
-{
-
-    QString l = combo_sup->currentText();
-    QSqlQuery requette;
-    requette.prepare("DELETE FROM Historique WHERE Joeur = '"+ l +"'");
-
-    if(sup_joueur.verifNomJoueur(l))
-    {
-        if(requette.exec())
-        {
-           QMessageBox::warning(this,"SUPPRIMER","Suppresion Joueur Réussi");
-        }
-    }
-    else
-    {
-        QMessageBox::warning(this,"ERREUR","Suppresion Joueur n'a pas marcher");
-    }
-}
+//    createCombox();
+//    lay->addWidget(Bouton_ajouter,++b_equipe_1,j);
+//    lay->addWidget(Bouton_supprimer1,++b_sup_equipe_1,j);
+//}
 

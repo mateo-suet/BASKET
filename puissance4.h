@@ -22,6 +22,8 @@
 #include "BDD.h"
 #include "new_mdp.h"
 #include "equipe.h"
+#include "parametre.h"
+#include "mdp.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class puissance4; }
@@ -38,98 +40,51 @@ public:
 
     void on_sett_clicked();
 
-    void creation_des_widget();
-
-    void la_page_mdp();
-
-    void createCombox();
-
-    void keyPressEvent(QKeyEvent * event);
-
-    void destroyCombox();
-
-    void Ecrire();
+//    void keyPressEvent(QKeyEvent * event);
 
     void lesnoms_bdd();
 
-    void compteur_de_widget();
+    void ajout_bdd_historique();
 
 public slots:
     void le_bouton_ok();
 
-    void le_bouton_quitter();
+    bool verifMDP();
 
-    void le_bouton_default();
+    bool nouveau_mdp();
 
-    void le_bouton_valider();
+    void fin_de_ligne();
 
-    void le_bouton_ajouter();
+    void les_joueurs();
 
-    void le_bouton_ajouter2();
+    void les_new_joueur();
 
-    void le_bouton_supprimer1();
+    void suppresion();
 
-    void le_bouton_supprimer2();
-
-    void le_bouton_changer_mdp();
-
-    void le_bouton_supprimer_joueur();
-
-    bool le_bouton_new_player();
-
+    void ajout_j();
 
 private:
     Ui::puissance4 *ui;
 
-    QRadioButton *nb5;
-    QRadioButton *nb7;
-    QRadioButton *bson;
-    QRadioButton *bsoff;
 
-    QTimeEdit *LeTemps;
-
-    QPushButton *Bouton_ok;
-    QPushButton *Bouton_quitter;
-    QPushButton *Bouton_default;
-    QPushButton *Bouton_valider_mdp;
-    QPushButton *Bouton_ajouter;
-    QPushButton *Bouton_ajouter2;
-    QPushButton *Bouton_supprimer1;
-    QPushButton *Bouton_supprimer2;
-    QPushButton *Bouton_changer_mdp;
-    QPushButton *Bouton_new_player;
-    QPushButton *Bouton_sup_joueur;
-    QSpinBox *tire;
-
-    QLabel *titre;
-    QLabel *titre1;
-    QLabel *titre_nb_tire;
-    QLabel *titreBS;
-    QLabel *titre_mdp;
-    QLabel *titre_new_player;
-    QLabel *titre_sup_player;
-
-    QGridLayout *lay;
 
     QButtonGroup *Groupe;
 
-    QWidget *fenetre_mdp;
+    int position_combo;
 
-    QLineEdit *ligne_mdp;
+
     QLineEdit *ligne_new_player;
     QLineEdit *Nom_Equipe_1;
     QLineEdit *Nom_Equipe_2;
 
     QList<QString> LesNoms_combobox;
+    QList<QString> les_noms_historique_bdd;
 
     QComboBox *combo_sup;
     QComboBox *combo;
 
     QDate *laDate;
 
-    int i; // chiffre combobox
-    int j;
-    int f;
 
     int b_equipe_1=15;
     int b_equipe_2=15;
@@ -146,6 +101,11 @@ private:
     new_mdp le_new;
 
     Equipe les_equipes;
+
+    Parametre settings;
+
+    MDP pages;
+
 };
 
 #endif // PUISSANCE4_H
