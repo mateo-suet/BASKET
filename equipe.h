@@ -25,9 +25,13 @@ public:
 
     void plus_joueur_1(int position_j1, QComboBox *combo_1);
 
-    bool recup_les_noms(QList<QString>& noms);
+    bool recup_les_noms1(QList<QString>& noms);
 
-    void nom_historique(QList<QString>& noms_historique);
+    bool recup_les_noms2(QList<QString>& noms);
+
+    void nom_equipe1(QList<QString>& liste_equipe_1);
+
+    void nom_equipe2(QList<QString>& liste_equipe_2);
 
     QString ajouter_joueur();
 
@@ -49,6 +53,10 @@ public:
 
     void ajout_joueur_bdd();
 
+    void quitter();
+
+
+
 private:
 
     QString le_nouveau;
@@ -69,6 +77,8 @@ private:
     QComboBox *combo_2 = new QComboBox;
 
     QList<QString> noms_des_joueurs;
+    QList<QString> liste_equipe1;
+    QList<QString> liste_equipe2;
 
     QString combo_num1;
     QString combo_num2;
@@ -95,6 +105,8 @@ signals:
     void nouveau_combo_1();
 
     void ajout_bdd();
+
+    void quitter_sign();
 
 };
 

@@ -79,36 +79,13 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QTimeEdit" name="Temps">
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
+    <item row="1" column="0" colspan="2">
+     <widget class="QSpinBox" name="temps">
+      <property name="maximum">
+       <number>99</number>
       </property>
-      <property name="maximumTime">
-       <time>
-        <hour>0</hour>
-        <minute>10</minute>
-        <second>59</second>
-       </time>
-      </property>
-      <property name="minimumTime">
-       <time>
-        <hour>0</hour>
-        <minute>0</minute>
-        <second>5</second>
-       </time>
-      </property>
-      <property name="displayFormat">
-       <string>mm:ss</string>
-      </property>
-      <property name="time">
-       <time>
-        <hour>0</hour>
-        <minute>0</minute>
-        <second>5</second>
-       </time>
+      <property name="value">
+       <number>10</number>
       </property>
      </widget>
     </item>
@@ -171,7 +148,7 @@
   <widget class="QPushButton" name="Valider">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>110</x>
      <y>220</y>
      <width>131</width>
      <height>51</height>
@@ -179,6 +156,19 @@
    </property>
    <property name="text">
     <string>Valider</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Quitter_1">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>220</y>
+     <width>131</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
    </property>
   </widget>
  </widget>

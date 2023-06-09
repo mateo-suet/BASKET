@@ -28,6 +28,10 @@ class BDD : public QObject
 
     bool La_suppresion(QString player);
 
+    bool ajout_joueur_party(QString joueur_equipe1);
+
+    bool ajout_joueur_party2(QString joueur_equipe2);
+
   private:
     QSqlDatabase m_db;
 

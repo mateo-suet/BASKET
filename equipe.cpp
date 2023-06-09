@@ -13,6 +13,8 @@ Equipe::Equipe(QWidget *parent) :
     connect(ui->MOINS_1, &QPushButton::clicked, this, &Equipe::supprimer_combobox_equipe1);
     connect(ui->MOINS_2, &QPushButton::clicked, this, &Equipe::supprimer_combobox_equipe2);
     connect(ui->Bouton_Valider, &QPushButton::clicked, this, &Equipe::ajout_joueur_bdd);
+
+    connect(ui->quitter_equipe, &QPushButton::clicked, this, &Equipe::quitter);
     //this->lancement();
 
     //connect(this, &Equipe::nouveau_combo_1, this, &Equipe::plus_joueur_1);
@@ -48,7 +50,7 @@ int Equipe::compter_combobox_2p()
 }
 
 
-bool Equipe::recup_les_noms(QList<QString>& noms)
+bool Equipe::recup_les_noms1(QList<QString>& noms)
 {
 
     noms_des_joueurs = noms;
@@ -56,9 +58,25 @@ bool Equipe::recup_les_noms(QList<QString>& noms)
     {
     ++i;
     ui->combo_sup->addItems(noms);
+
     }
     combo_1->addItems(noms);
+
+
+}
+
+bool Equipe::recup_les_noms2(QList<QString>& noms)
+{
+
+    noms_des_joueurs = noms;
+    if(i == 0)
+    {
+    ++i;
+    ui->combo_sup->addItems(noms);
+
+    }
     combo_2->addItems(noms);
+
 
 }
 
@@ -82,12 +100,20 @@ void Equipe::lancement()
 
 void Equipe::lancement_joueur()
 {
+    if(position>!1)
+    {
+        liste_equipe1.append(combo_1->currentText());
+        qDebug() << liste_equipe1;
+    }
+
     if(compter_combobox_1p() < 11)
     {
         combo_1 = new QComboBox();
         position_j1 = compter_combobox_1p()+1;
-        recup_les_noms(noms_des_joueurs);
+        recup_les_noms1(noms_des_joueurs);
         ui->lay_equipe1->addWidget(combo_1,position_j1,0);
+
+
     }
     else
     {
@@ -97,11 +123,16 @@ void Equipe::lancement_joueur()
 
 void Equipe::lancement_joueur_2()
 {
+    if(position_2>!1)
+    {
+        liste_equipe2.append(combo_2->currentText());
+        qDebug() << liste_equipe2;
+    }
     if(compter_combobox_2p() < 11)
     {
         combo_2 = new QComboBox();
         position_j2 = compter_combobox_2p()+1;
-        recup_les_noms(noms_des_joueurs);
+        recup_les_noms2(noms_des_joueurs);
         ui->lay_equipe2->addWidget(combo_2, position_j2, 0);
     }
     else
@@ -162,10 +193,35 @@ void Equipe::ajout_joueur_bdd()
     emit ajout_bdd();
 }
 
-void Equipe::nom_historique(QList<QString>& noms_historique)
+void Equipe::quitter()
 {
-    noms_historique << combo_1->currentText();
-    qDebug() << "les" << noms_historique;
-    //noms_historique << combo_2->currentText();
-    //qDebug() << "ici" << noms_historique;
+    emit quitter_sign();
 }
+
+
+void Equipe::nom_equipe1(QList<QString>& liste_equipe_1)
+{
+    liste_equipe1.append(combo_1->currentText());
+
+    for(i=0; i<position;i++)
+    {
+        liste_equipe_1.append(liste_equipe1[i]);
+        qDebug()<< liste_equipe_1;
+    }
+
+}
+
+void Equipe::nom_equipe2(QList<QString> &liste_equipe_2)
+{
+    liste_equipe2.append(combo_2->currentText());
+
+
+    for(i=0; i<position_2;i++)
+    {
+        liste_equipe_2.append(liste_equipe2[i]);
+        qDebug()<< liste_equipe_2;
+    }
+}
+
+
+

@@ -6,22 +6,31 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>191</width>
-    <height>471</height>
+    <width>1080</width>
+    <height>805</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>puissance4</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(255, 255, 255)</string>
+  </property>
   <widget class="QWidget" name="LeTout">
    <widget class="QPushButton" name="PlayPB">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>13</y>
+      <x>440</x>
+      <y>183</y>
       <width>161</width>
       <height>91</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(190, 190, 190)</string>
     </property>
     <property name="text">
      <string>Jouer</string>
@@ -30,11 +39,14 @@
    <widget class="QPushButton" name="ResultPB">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>110</y>
+      <x>440</x>
+      <y>280</y>
       <width>161</width>
       <height>91</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(190, 190, 190)</string>
     </property>
     <property name="text">
      <string>Résultat</string>
@@ -43,11 +55,14 @@
    <widget class="QPushButton" name="SettingsPB">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>210</y>
+      <x>440</x>
+      <y>380</y>
       <width>161</width>
       <height>91</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(190, 190, 190)</string>
     </property>
     <property name="text">
      <string>Paramétres</string>
@@ -56,11 +71,14 @@
    <widget class="QPushButton" name="QuitPB">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>310</y>
+      <x>440</x>
+      <y>480</y>
       <width>161</width>
       <height>91</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(190, 190, 190)</string>
     </property>
     <property name="text">
      <string>Quitter</string>
@@ -72,7 +90,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>191</width>
+     <width>1080</width>
      <height>22</height>
     </rect>
    </property>

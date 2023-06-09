@@ -1,93 +1,48 @@
-#ifndef PUISSANCE4_H
-#define PUISSANCE4_H
+#ifndef JEU_H
+#define JEU_H
 
-#include <QSpinBox>
-#include <QRadioButton>
 #include <QMainWindow>
 #include <QWidget>
-#include <QTimeEdit>
-#include <QObject>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QDebug>
 #include <QLabel>
-#include <QButtonGroup>
-#include <QString>
-#include <QLineEdit>
+#include <QVector>
+#include <QFont>
+#include <QHBoxLayout>
+#include <QRect>
 #include <QComboBox>
-#include <QKeyEvent>
+#include <QFontComboBox>
+#include <QPushButton>
+#include <QTableWidget>
 #include <QList>
-#include <QSpinBox>
-#include <QDate>
-#include <QGridLayout>
-#include <QLCDNumber>
+#include <QGroupBox>
 #include <QTimer>
-#include "BDD.h"
-#include "new_mdp.h"
-#include "equipe.h"
-#include "parametre.h"
-#include "mdp.h"
-#include "resultat.h"
+#include <QLCDNumber>
+#include <QtSql>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class puissance4; }
+namespace Ui { class jeu; }
 QT_END_NAMESPACE
 
-class puissance4 : public QMainWindow
+class jeu : public QMainWindow
 {
     Q_OBJECT
+
 public:
-    puissance4(QWidget *parent = nullptr);
-    ~puissance4();
-
+    jeu(QWidget *parent = nullptr);
+    ~jeu();
     void on_playButton_clicked();
-
-    void on_sett_clicked();
-
-//    void keyPressEvent(QKeyEvent * event);
-
-    void lesnoms_bdd();
-
-    void ajout_bdd_historique();
-
-    void quitter();
-
-    void quitter_1();
-
-    void quitter_2();
-
-    void ouverture_historique();
-
-    void quitter_tout();
-
     void createLayout();
     void afficherJeton();
     void createPlateau();
     void verification();
     void clearList();
     void keyPressEvent(QKeyEvent *event);
+
+
+
     void setBoutonLayout(QLayout *newBoutonLayout);
 
+
 public slots:
-    void le_bouton_ok();
-
-    bool verifMDP();
-
-    bool nouveau_mdp();
-
-    void fin_de_ligne();
-
-    void les_joueurs();
-
-    void les_new_joueur();
-
-    void suppresion();
-
-    void ajout_j();
-
-
-
     void changementJoueur();
     void menupause();
     void resumeGame();
@@ -95,57 +50,13 @@ public slots:
     void restartGame();
     void timerSlot();
 
+
+
 private:
-    Ui::puissance4 *ui;
+//    QVector<bool> *coloneJeu;
+//    QVector<QVector<bool>*>*tableauJeu;
 
-
-
-    QButtonGroup *Groupe;
-
-    int position_combo;
-
-
-    QLineEdit *ligne_new_player;
-    QLineEdit *Nom_Equipe_1;
-    QLineEdit *Nom_Equipe_2;
-
-    QList<QString> LesNoms_combobox;
-    QList<QString> les_noms_historique_bdd;
-    QList<QString> les_noms_historique_bdd2;
-
-    QString un_nom;
-    QString un_nom2;
-
-    QComboBox *combo_sup;
-    QComboBox *combo;
-
-    QDate *laDate;
-
-
-    int b_equipe_1=15;
-    int b_equipe_2=15;
-
-    int b_sup_equipe_1=16;
-    int b_sup_equipe_2=16;
-
-    int x = 0;
-
-    BDD ma_bdd;
-    BDD ma_bdd_new;
-    BDD sup_joueur;
-
-    new_mdp le_new;
-
-    Equipe les_equipes;
-
-    Parametre settings;
-
-    MDP pages;
-
-    Resultat Historique;
-
-
-
+    Ui::Puissance4 *ui;
     QLabel  *label_img ;
     QPixmap *pixmap_img;
     QGridLayout *winningGL;
@@ -167,7 +78,7 @@ private:
     QTimer *timer;
     QLCDNumber *numberTimer;
     QLabel *player;
-    int tmps;
+    int tmps = 10;
     int i;
     int k;
     int jeton_col1=6;
@@ -179,7 +90,7 @@ private:
     int jeton_col7=6;
     int j;
     int color=0;
-    int nbPanier;
+    int nbPanier=7;
     int playerlist;
 
     QList<QString> col1_vrif ;
@@ -211,8 +122,8 @@ private:
     QList<QString> diag6G_vrif = {"","","","",""};
     QList<QString> diag7G_vrif = {"","","",""};
     QList<QString> players;
-    int testest = 0;
+    int puissance4 = 0;
+
 
 };
-
 #endif // PUISSANCE4_H

@@ -16,7 +16,8 @@ SOURCES += \
     mdp.cpp \
     new_mdp.cpp \
     parametre.cpp \
-    puissance4.cpp
+    puissance4.cpp \
+    resultat.cpp
 
 HEADERS += \
     BDD.h \
@@ -24,14 +25,16 @@ HEADERS += \
     mdp.h \
     new_mdp.h \
     parametre.h \
-    puissance4.h
+    puissance4.h \
+    resultat.h
 
 FORMS += \
     equipe.ui \
     mdp.ui \
     new_mdp.ui \
     parametre.ui \
-    puissance4.ui
+    puissance4.ui \
+    resultat.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

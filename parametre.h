@@ -19,13 +19,23 @@ public:
 
     void valider();
 
+    void quitter();
+    int envoieTemps();
+    int nombrePanier();
+    int nbPaniers;
+    //int envoiePanier();
+
 private:
     Ui::Parametre *ui;
+    int tempsTir;
+
 
 signals:
     void s_changement_mdp();
 
     void s_valider();
+
+    void s_quitter();
 };
 
 #endif // PARAMETRE_H

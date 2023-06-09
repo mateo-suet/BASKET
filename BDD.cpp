@@ -132,3 +132,78 @@ bool BDD::La_suppresion(QString player)
     }
     return success;
 }
+
+bool BDD::ajout_joueur_party(QString joueur_equipe1)
+{
+    bool success;
+    success = false;
+    QSqlQuery query;
+    QSqlQuery query_2;
+
+    qDebug() << "ouaiiiiiis";
+
+
+    query_2.prepare("DELETE FROM Jeux WHERE Nom = '"+joueur_equipe1+"'");
+    query.prepare("INSERT INTO Jeux (Nom,Equipe) VALUES (:nom, :equipe)");
+    query.bindValue(":nom",joueur_equipe1);
+    query.bindValue(":equipe","equipe1");
+
+
+    if(query_2.exec())
+        {
+            qDebug() << "c'est bon";
+        }
+    else
+        {
+            qDebug() << "c'est pas bon";
+        }
+
+    if(query.exec())
+        {
+            success = true;
+
+
+        }
+    else
+        {
+            qDebug() << "ça marche pas";
+        }
+     return success;
+    }
+
+
+bool BDD::ajout_joueur_party2(QString joueur_equipe2)
+{
+    bool success;
+    success = false;
+    QSqlQuery query;
+    QSqlQuery query_2;
+
+    qDebug() << "ouaiiiiiis";
+    query_2.prepare("DELETE FROM Jeux WHERE Nom = '"+joueur_equipe2+"'");
+    query.prepare("INSERT INTO Jeux (Nom,Equipe) VALUES (:nom, :equipe)");
+    query.bindValue(":nom",joueur_equipe2);
+    query.bindValue(":equipe", "equipe2" );
+
+    if(query_2.exec())
+    {
+        qDebug() << "c'est bon";
+    }
+    else
+    {
+        qDebug() << "c'est pas bon";
+    }
+
+    if(query.exec())
+    {
+        success = true;
+
+    }
+    else
+    {
+       qDebug() << "ça marche pas";
+    }
+    return success;
+}
+
+
